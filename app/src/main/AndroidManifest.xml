@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.owner.superdiary">
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+    <uses-feature android:name="android.hardware.sensor.stepcounter" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <application
+        android:name=".Activity.MainActivity.Date"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_appicon"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        tools:replace="icon, label, theme">
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="fhar6xmNIAD0GipStOA04AUs7PUxCs1W" />
+
+        <!-- <meta-data -->
+        <!-- android:name="com.baidu.lbsapi.API_KEY" -->
+        <!-- android:value="nA8K9xGa6V8aGtuKDG7m51GG0QOXdlGK" /> -->
+
+        <activity
+            android:name=".Activity.MainActivity.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/MainActivityTheme" />
+        <activity
+            android:name=".Activity.EditActivity"
+            android:label="记文字" />
+
+        <service
+            android:name=".DataCollector.LocationRecordService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="true" />
+
+        <receiver
+            android:name=".DataCollector.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".DataCollector.ShutdownReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".DataCollector.UnlockReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".DataCollector.OutGoingCallReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".DataCollector.IncomingCallReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".DataCollector.EmotionRecorder">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.example.owner.superdiary.action.EmotionRecorder.HAPPY" />
+                <action android:name="com.example.owner.superdiary.action.EmotionRecorder.NORMAL" />
+                <action android:name="com.example.owner.superdiary.action.EmotionRecorder.SAD" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/emotion_recorder_info" />
+        </receiver>
+
+        <activity android:name=".Activity.CheckPermissionActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activity.PasswordSettingActivityOne"
+            android:label="添加密码" />
+        <activity
+            android:name=".Activity.PasswordSettingActivityTwo"
+            android:label="取消密码" />
+        <activity
+            android:name=".Activity.CheckPasswordActivity"
+            android:label="密码验证" />
+        <activity
+            android:name=".Activity.IntroductionActivity"
+            android:label="介绍" />
+        <activity
+            android:name=".Activity.AboutActivity"
+            android:label="关于" />
+        <activity
+            android:name=".Activity.PictureActivity"
+            android:label="记图片">
+        </activity>
+    </application>
+
+</manifest>
