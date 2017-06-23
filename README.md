@@ -1,7 +1,5 @@
-# Documents
+# [Documents](https://github.com/SDPCoder/SuperDiaryDocuments)
 包括SD、SRS、安装部署说明、使用手册、项目申请书、小组贡献率表等
-[Click me](https://github.com/SDPCoder/SuperDiaryDocuments)
-
 
 # SuperDiary
 This is an Android app which can gather and record your daily life information and then generate diaries automatically.
