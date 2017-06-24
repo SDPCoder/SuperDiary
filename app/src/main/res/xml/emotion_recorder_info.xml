@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:initialKeyguardLayout="@layout/emotion_recorder"
-    android:initialLayout="@layout/emotion_recorder"
+    android:initialKeyguardLayout="@layout/widget_emotionrecorder"
+    android:initialLayout="@layout/widget_emotionrecorder"
     android:minHeight="40dp"
     android:minWidth="180dp"
     android:previewImage="@drawable/widget_preview"

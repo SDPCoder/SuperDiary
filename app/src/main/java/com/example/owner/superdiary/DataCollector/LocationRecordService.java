@@ -21,7 +21,7 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.owner.superdiary.DAO.MyDBHelper;
+import com.example.owner.superdiary.Utils.MyDBHelper;
 
 import java.lang.Math;
 

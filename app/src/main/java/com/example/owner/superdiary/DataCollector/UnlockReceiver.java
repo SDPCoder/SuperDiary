@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.owner.superdiary.DAO.MyDBHelper;
+import com.example.owner.superdiary.Utils.MyDBHelper;
 
 import java.util.HashMap;
 import java.util.Map;

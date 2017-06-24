@@ -32,7 +32,7 @@ import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.CoordinateConverter;
 import com.example.owner.superdiary.Activity.CheckPasswordActivity;
-import com.example.owner.superdiary.DAO.MyDBHelper;
+import com.example.owner.superdiary.Utils.MyDBHelper;
 import com.example.owner.superdiary.Activity.PasswordSettingActivityOne;
 import com.example.owner.superdiary.Activity.PasswordSettingActivityTwo;
 import com.example.owner.superdiary.Activity.PictureActivity;
@@ -53,24 +53,26 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class fragment1 extends Fragment {
     View fragment = null;
+
     CardView bootTime_card, shutdownTime_card, unlockTime_card, moodIndex_card;
     CardView frequentContact_card, mapview_card;
     TextView bootTime_text, shutdownTime_text, unlockTime_text, moodIndex_text;
     TextView frequentContact_text;
     TextureMapView mapView;
-    Context context;
+    TextView dateTitle;
+
     Handler mhandler;
     MyDBHelper bootTimeDB, shutdownTimeDB, unlockTimeDB, callsDB, moodDB, locDB;
+
     String today;
     Calendar date;
-    TextView dateTitle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (fragment == null) {
-            context = getActivity().getApplicationContext();
+            Context context = getActivity().getApplicationContext();
             SDKInitializer.initialize(context);
-            fragment = View.inflate(getActivity(), R.layout.fragment_one, null);
+            fragment = View.inflate(getActivity(), R.layout.activity_main_fragment_one, null);
             getReferences();
             initDB();
             initMap();
@@ -210,6 +212,8 @@ public class fragment1 extends Fragment {
     }
 
     private void initDB() {
+        Context context = getActivity().getApplicationContext();
+
         Map<String, String> table_header = new HashMap<>();
         bootTimeDB = new MyDBHelper(context, "superdiary_test001.db", "bootTime", table_header, null, 1);
 

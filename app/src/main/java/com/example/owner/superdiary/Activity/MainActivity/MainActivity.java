@@ -27,7 +27,9 @@ import com.example.owner.superdiary.R;
 import com.example.owner.superdiary.Activity.MainActivity.fragments.fragment1;
 import com.example.owner.superdiary.Activity.MainActivity.fragments.fragment2;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Calendar;
+
+public class MainActivity extends AppCompatActivity implements fragment2.OnDateSelectedListener {
 
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
@@ -113,6 +115,14 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.dl);
         lvLeftMenu = (ListView) findViewById(R.id.lv);
         viewPager = (ViewPager) findViewById(R.id.vp);
+    }
+
+    @Override
+    public void OnDateSelected(Calendar date) {
+        viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+        fragment1 one = (fragment1)((MyAdapter)viewPager.getAdapter()).getItem(0);
+        one.setDate(date);
+        one.loadData(date);
     }
 
     private class MyAdapter extends FragmentStatePagerAdapter {

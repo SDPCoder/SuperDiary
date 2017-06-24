@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.example.owner.superdiary.DAO.MyDBHelper;
+import com.example.owner.superdiary.Utils.MyDBHelper;
 
 import java.util.HashMap;
 import java.util.Map;

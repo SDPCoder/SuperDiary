@@ -1,4 +1,4 @@
-package com.example.owner.superdiary.DAO;
+package com.example.owner.superdiary.Utils;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -7,7 +7,7 @@
 
     <!--主布局-->
 
-    <include layout="@layout/view_pager"/>
+    <include layout="@layout/activity_main_drawer_view_pager"/>
 
     <!--侧滑菜单布局-->
     <LinearLayout

@@ -12,7 +12,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-import com.example.owner.superdiary.DAO.MyDBHelper;
+import com.example.owner.superdiary.Utils.MyDBHelper;
 import com.example.owner.superdiary.R;
 
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class EmotionRecorder extends AppWidgetProvider {
                                 int appWidgetId) {
 
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.emotion_recorder);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_emotionrecorder);
 
         setOnClickListeners(context, views);
 
