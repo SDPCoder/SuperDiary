@@ -53,7 +53,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 public class fragment1 extends Fragment {
-    View fragment = null;
 
     CardView bootTime_card, shutdownTime_card, unlockTime_card, moodIndex_card;
     CardView frequentContact_card, mapview_card;
@@ -61,37 +60,32 @@ public class fragment1 extends Fragment {
     TextView frequentContact_text;
     TextureMapView mapView;
     TextView dateTitle;
+    FloatingActionButton fab1, fab2, fab3;
+    FloatingActionMenu menuRed;
 
     MyDBHelper bootTimeDB, shutdownTimeDB, unlockTimeDB, callsDB, moodDB, locDB;
 
-    String today;
     Calendar date;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (fragment == null) {
-            initView();
-            initDB();
-            initMap();
+        initDB();
+        View view = initView();
+        initMap();
+        loadData(Calendar.getInstance());
+        initEvent();
+        return view;
+    }
 
-            date = Calendar.getInstance();
-            today = String.valueOf(date.get(Calendar.YEAR)) + "_" + String.valueOf(date.get(Calendar.MONTH) + 1) + "_" + String.valueOf(date.get(Calendar.DAY_OF_MONTH));
-            dateTitle.setText(String.valueOf(date.get(Calendar.YEAR)) + "年 " + String.valueOf(date.get(Calendar.MONTH) + 1) + "月 " + String.valueOf(date.get(Calendar.DAY_OF_MONTH)) + "日");
-        }
-
+    private void initEvent() {
         final SharedPreferences sharedPreferences = getActivity().getSharedPreferences("DiaryPwd", MODE_PRIVATE);
-        FloatingActionButton fab1 = (FloatingActionButton) fragment.findViewById(R.id.fab1);
-        FloatingActionButton fab2 = (FloatingActionButton) fragment.findViewById(R.id.fab2);
-        FloatingActionButton fab3 = (FloatingActionButton) fragment.findViewById(R.id.fab3);
-
-        final FloatingActionMenu menuRed = (FloatingActionMenu) fragment.findViewById(R.id.menu_red);
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 menuRed.close(true);
-                String curPwd = sharedPreferences.getString(today, null);
+                String curPwd = sharedPreferences.getString(getTodayStr(), null);
                 Bundle bundle = new Bundle();
-                bundle.putString("today", today);
+                bundle.putString("today", getTodayStr());
                 if (curPwd == null) {
                     Intent intent = new Intent(getActivity(), EditActivity.class);
                     intent.putExtras(bundle);
@@ -110,9 +104,9 @@ public class fragment1 extends Fragment {
             @Override
             public void onClick(View view) {
                 menuRed.close(true);
-                String curPwd = sharedPreferences.getString(today, null);
+                String curPwd = sharedPreferences.getString(getTodayStr(), null);
                 Bundle bundle = new Bundle();
-                bundle.putString("today", today);
+                bundle.putString("today", getTodayStr());
                 if (curPwd == null) {
                     Intent intent = new Intent(getActivity(), PictureActivity.class);
                     intent.putExtras(bundle);
@@ -131,10 +125,10 @@ public class fragment1 extends Fragment {
             @Override
             public void onClick(View view) {
                 menuRed.close(true);
-                String curPwd = sharedPreferences.getString(today, null);
+                String curPwd = sharedPreferences.getString(getTodayStr(), null);
                 Bundle bundle = new Bundle();
-                bundle.putString("today", today);
-                Log.i("today", today);
+                bundle.putString("today", getTodayStr());
+                Log.i("today", getTodayStr());
                 if (curPwd == null) {
                     Intent intent = new Intent(getActivity(), PasswordSettingActivityOne.class);
                     intent.putExtras(bundle);
@@ -147,66 +141,33 @@ public class fragment1 extends Fragment {
 
             }
         });
-        return fragment;
     }
 
-    public void setDate(Calendar date) {
-        this.date = date;
-    }
-
-    public void loadData(Calendar date) {
-        today = String.valueOf(date.get(Calendar.YEAR)) + "_" + String.valueOf(date.get(Calendar.MONTH) + 1) + "_" + String.valueOf(date.get(Calendar.DAY_OF_MONTH));
-        dateTitle.setText(String.valueOf(date.get(Calendar.YEAR)) + "年 " + String.valueOf(date.get(Calendar.MONTH) + 1) + "月 " + String.valueOf(date.get(Calendar.DAY_OF_MONTH)) + "日");
-        Log.i("loadData", "Called, date: " + today);
-        loadBootTime(date);
-        loadShutdownTime(date);
-        loadUnlockTime(date);
-        loadMoodIndex(date);
-        loadFrequentContact(date);
-        loadStayLoc(date);
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-        loadData(this.date);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    private void initView() {
+    private View initView() {
         SDKInitializer.initialize(getActivity().getApplicationContext());
-        fragment = View.inflate(getActivity(), R.layout.activity_main_fragment_one, null);
-        bootTime_text = (TextView) fragment.findViewById(R.id.bootTime_text);
-        shutdownTime_text = (TextView) fragment.findViewById(R.id.shutdownTime_text);
-        unlockTime_text = (TextView) fragment.findViewById(R.id.unlockTime_text);
-        moodIndex_text = (TextView) fragment.findViewById(R.id.moodIndex_text);
-        frequentContact_text = (TextView) fragment.findViewById(R.id.frequentContact_text);
-        dateTitle = (TextView) fragment.findViewById(R.id.dateTitle);
-        mapView = (TextureMapView) fragment.findViewById(R.id.bmapView);
+        View view = View.inflate(getActivity(), R.layout.activity_main_fragment_one, null);
 
-        bootTime_card = (CardView) fragment.findViewById(R.id.bootTime_card);
-        shutdownTime_card = (CardView) fragment.findViewById(R.id.shutdownTime_card);
-        unlockTime_card = (CardView) fragment.findViewById(R.id.unlockTime_card);
-        moodIndex_card = (CardView) fragment.findViewById(R.id.moodIndex_card);
-        frequentContact_card = (CardView) fragment.findViewById(R.id.frequentContact_card);
-        mapview_card = (CardView) fragment.findViewById(R.id.mapview_card);
+        bootTime_text = (TextView) view.findViewById(R.id.bootTime_text);
+        shutdownTime_text = (TextView) view.findViewById(R.id.shutdownTime_text);
+        unlockTime_text = (TextView) view.findViewById(R.id.unlockTime_text);
+        moodIndex_text = (TextView) view.findViewById(R.id.moodIndex_text);
+        frequentContact_text = (TextView) view.findViewById(R.id.frequentContact_text);
+        dateTitle = (TextView) view.findViewById(R.id.dateTitle);
+        mapView = (TextureMapView) view.findViewById(R.id.bmapView);
+
+        bootTime_card = (CardView) view.findViewById(R.id.bootTime_card);
+        shutdownTime_card = (CardView) view.findViewById(R.id.shutdownTime_card);
+        unlockTime_card = (CardView) view.findViewById(R.id.unlockTime_card);
+        moodIndex_card = (CardView) view.findViewById(R.id.moodIndex_card);
+        frequentContact_card = (CardView) view.findViewById(R.id.frequentContact_card);
+        mapview_card = (CardView) view.findViewById(R.id.mapview_card);
+
+        fab1 = (FloatingActionButton) view.findViewById(R.id.fab1);
+        fab2 = (FloatingActionButton) view.findViewById(R.id.fab2);
+        fab3 = (FloatingActionButton) view.findViewById(R.id.fab3);
+        menuRed = (FloatingActionMenu) view.findViewById(R.id.menu_red);
+
+        return view;
     }
 
     private void initDB() {
@@ -235,6 +196,61 @@ public class fragment1 extends Fragment {
         table_header6.put("longitude", "REAL");
         table_header6.put("duration", "INTEGER");
         locDB = new MyDBHelper(context, "superdiary_test001.db", "location", table_header6, null, 1);
+    }
+
+    private void initMap() {
+        Bitmap bitmap = Bitmap.createScaledBitmap(
+                BitmapFactory.decodeResource(getResources(), R.mipmap.pointer),
+                100, 100, true);
+        BitmapDescriptor bitmapD = BitmapDescriptorFactory.fromBitmap(bitmap);
+
+        mapView.getMap().setMyLocationEnabled(true);
+        MyLocationConfiguration config = new MyLocationConfiguration(
+                MyLocationConfiguration.LocationMode.NORMAL, true, bitmapD);
+        mapView.getMap().setMyLocationConfigeration(config);
+
+        mapView.showZoomControls(false);
+        mapView.showScaleControl(false);
+        UiSettings settings=mapView.getMap().getUiSettings();
+        settings.setAllGesturesEnabled(false);
+        settings.setCompassEnabled(false);
+    }
+
+    private LatLng getTransformedLoc(double longitude, double latitude) {
+        CoordinateConverter mConverter = new CoordinateConverter();
+        mConverter.from(CoordinateConverter.CoordType.GPS);
+        mConverter.coord(new LatLng(latitude, longitude));
+        return mConverter.convert();
+    }
+
+    private void updateMap(double longitude, double latitude) {
+        MyLocationData.Builder data = new MyLocationData.Builder();
+        LatLng desLatLng = getTransformedLoc(longitude, latitude);
+        data.latitude(desLatLng.latitude);
+        data.longitude(desLatLng.longitude);
+        mapView.getMap().setMyLocationData(data.build());
+
+        float zoomLevel = 19;
+        MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(zoomLevel);
+        mapView.getMap().setMapStatus(u);
+    }
+
+    private void centerView(double longitude, double latitude) {
+        MapStatus mMapstatus = new MapStatus.Builder().target(getTransformedLoc(longitude, latitude)).build();
+        MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapstatus);
+        mapView.getMap().setMapStatus(mapStatusUpdate);
+    }
+
+    public void loadData(Calendar date) {
+        this.date = date;
+        dateTitle.setText(String.valueOf(date.get(Calendar.YEAR)) + "年 " + String.valueOf(date.get(Calendar.MONTH) + 1) + "月 " + String.valueOf(date.get(Calendar.DAY_OF_MONTH)) + "日");
+        Log.i("loadData", "Called, date: " + getTodayStr());
+        loadBootTime(date);
+        loadShutdownTime(date);
+        loadUnlockTime(date);
+        loadMoodIndex(date);
+        loadFrequentContact(date);
+        loadStayLoc(date);
     }
 
     private void loadBootTime(Calendar date) {
@@ -437,46 +453,32 @@ public class fragment1 extends Fragment {
         centerView(longitude, latitude);
     }
 
-    private void initMap() {
-        Bitmap bitmap = Bitmap.createScaledBitmap(
-                BitmapFactory.decodeResource(getResources(), R.mipmap.pointer),
-                100, 100, true);
-        BitmapDescriptor bitmapD = BitmapDescriptorFactory.fromBitmap(bitmap);
-
-        mapView.getMap().setMyLocationEnabled(true);
-        MyLocationConfiguration config = new MyLocationConfiguration(
-                MyLocationConfiguration.LocationMode.NORMAL, true, bitmapD);
-        mapView.getMap().setMyLocationConfigeration(config);
-
-        mapView.showZoomControls(false);
-        mapView.showScaleControl(false);
-        UiSettings settings=mapView.getMap().getUiSettings();
-        settings.setAllGesturesEnabled(false);
-        settings.setCompassEnabled(false);
+    private String getTodayStr() {
+        return String.valueOf(date.get(Calendar.YEAR)) + "_" + String.valueOf(date.get(Calendar.MONTH) + 1) + "_" + String.valueOf(date.get(Calendar.DAY_OF_MONTH));
     }
 
-    private LatLng getTransformedLoc(double longitude, double latitude) {
-        CoordinateConverter mConverter = new CoordinateConverter();
-        mConverter.from(CoordinateConverter.CoordType.GPS);
-        mConverter.coord(new LatLng(latitude, longitude));
-        return mConverter.convert();
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadData(this.date);
     }
 
-    private void updateMap(double longitude, double latitude) {
-        MyLocationData.Builder data = new MyLocationData.Builder();
-        LatLng desLatLng = getTransformedLoc(longitude, latitude);
-        data.latitude(desLatLng.latitude);
-        data.longitude(desLatLng.longitude);
-        mapView.getMap().setMyLocationData(data.build());
-
-        float zoomLevel = 19;
-        MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(zoomLevel);
-        mapView.getMap().setMapStatus(u);
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
     }
 
-    private void centerView(double longitude, double latitude) {
-        MapStatus mMapstatus = new MapStatus.Builder().target(getTransformedLoc(longitude, latitude)).build();
-        MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapstatus);
-        mapView.getMap().setMapStatus(mapStatusUpdate);
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
     }
 }

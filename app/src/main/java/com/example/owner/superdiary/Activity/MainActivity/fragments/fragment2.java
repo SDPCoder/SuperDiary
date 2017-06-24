@@ -19,39 +19,41 @@ import java.util.Calendar;
 public class fragment2 extends Fragment {
     OnDateSelectedListener mListener;
 
-    View fragment = null;
     MaterialCalendarView calendarView = null;
     Button todayButton = null;
-    fragment1 one;
 
-    public void setFragmentOne(fragment1 one) {
-        this.one = one;
-    }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (fragment == null) {
-            fragment = View.inflate(getActivity(), R.layout.activity_main_fragment_two, null);
-            calendarView = (MaterialCalendarView) fragment.findViewById(R.id.calendar);
-            calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE);
-            calendarView.setDateSelected(Calendar.getInstance(), true);
-            calendarView.setOnDateChangedListener(new com.prolificinteractive.materialcalendarview.OnDateSelectedListener() {
-                @Override
-                public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay selectedDate, boolean selected) {
-                    Calendar date = selectedDate.getCalendar();
-                    mListener.OnDateSelected(date);
-                }
-            });
-            todayButton = (Button) fragment.findViewById(R.id.todayButton);
-            todayButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Calendar date = Calendar.getInstance();
-                    calendarView.clearSelection();
-                    calendarView.setDateSelected(Calendar.getInstance(), true);
-                    mListener.OnDateSelected(date);
-                }
-            });
-        }
-        return fragment;
+        View view = initView();
+        initEvent();
+        return view;
+    }
+
+    private View initView() {
+        View view = View.inflate(getActivity(), R.layout.activity_main_fragment_two, null);
+        calendarView = (MaterialCalendarView) view.findViewById(R.id.calendar);
+        calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE);
+        calendarView.setDateSelected(Calendar.getInstance(), true);
+        todayButton = (Button) view.findViewById(R.id.todayButton);
+        return view;
+    }
+
+    private void initEvent() {
+        calendarView.setOnDateChangedListener(new com.prolificinteractive.materialcalendarview.OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay selectedDate, boolean selected) {
+                Calendar date = selectedDate.getCalendar();
+                mListener.OnDateSelected(date);
+            }
+        });
+        todayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar date = Calendar.getInstance();
+                calendarView.clearSelection();
+                calendarView.setDateSelected(Calendar.getInstance(), true);
+                mListener.OnDateSelected(date);
+            }
+        });
     }
 
     @Override

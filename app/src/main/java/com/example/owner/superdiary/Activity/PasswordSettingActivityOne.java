@@ -13,19 +13,22 @@ import com.example.owner.superdiary.Utils.MD5Utils;
 import com.example.owner.superdiary.R;
 
 public class PasswordSettingActivityOne extends AppCompatActivity {
+    Button okBtn, returnBtn;
+    EditText newPwd, confirmPwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_setting_one);
 
-        Button okBtn = (Button) findViewById(R.id.okBtn1);
-        Button returnBtn = (Button) findViewById(R.id.returnBtn1);
-        final EditText newPwd = (EditText) findViewById(R.id.newPwd);
-        final EditText confirmPwd = (EditText) findViewById(R.id.confirmPwd);
+        initView();
+        initEvent();
+    }
+
+    private void initEvent() {
+
         final SharedPreferences sharedPreferences = getSharedPreferences("DiaryPwd", MODE_PRIVATE);
         final String today = getIntent().getExtras().getString("today");
-
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,5 +56,12 @@ public class PasswordSettingActivityOne extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void initView() {
+        okBtn = (Button) findViewById(R.id.okBtn1);
+        returnBtn = (Button) findViewById(R.id.returnBtn1);
+        newPwd = (EditText) findViewById(R.id.newPwd);
+        confirmPwd = (EditText) findViewById(R.id.confirmPwd);
     }
 }

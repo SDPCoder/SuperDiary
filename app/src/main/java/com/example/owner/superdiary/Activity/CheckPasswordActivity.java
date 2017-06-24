@@ -12,15 +12,20 @@ import com.example.owner.superdiary.Utils.MD5Utils;
 import com.example.owner.superdiary.R;
 
 public class CheckPasswordActivity extends AppCompatActivity {
+    Button okBtn;
+    Button returnBtn;
+    EditText checkPwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_password);
 
-        Button okBtn = (Button) findViewById(R.id.okBtn3);
-        Button returnBtn = (Button) findViewById(R.id.returnBtn3);
-        final EditText checkPwd = (EditText) findViewById(R.id.checkPwd);
+        initView();
+        initEvent();
+    }
+
+    private void initEvent() {
         final Bundle bundle = getIntent().getExtras();
         final String curPwd = bundle.getString("curPwd");
         final int fab = bundle.getInt("fab");
@@ -52,5 +57,11 @@ public class CheckPasswordActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void initView() {
+        okBtn = (Button) findViewById(R.id.okBtn3);
+         returnBtn = (Button) findViewById(R.id.returnBtn3);
+         EditText checkPwd = (EditText) findViewById(R.id.checkPwd);
     }
 }

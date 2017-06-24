@@ -16,22 +16,27 @@ import java.io.IOException;
 
 public class EditActivity extends AppCompatActivity {
     private String FILE_NAME;
+
     private EditText editText;
+    private Button saveBtn, clearBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        Button saveBtn = (Button) findViewById(R.id.saveBtn);
-        Button clearBtn = (Button) findViewById(R.id.clearBtn);
-        editText = (EditText) findViewById(R.id.editText);
+        initView();
+
         Bundle bundle = getIntent().getExtras();
         String today = bundle.getString("today");
         FILE_NAME = today + "_diary.txt";
 
         load();
 
+        initEvent();
+    }
+
+    private void initEvent() {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,6 +56,12 @@ public class EditActivity extends AppCompatActivity {
                 editText.setText("");
             }
         });
+    }
+
+    private void initView() {
+        saveBtn = (Button) findViewById(R.id.saveBtn);
+        clearBtn = (Button) findViewById(R.id.clearBtn);
+        editText = (EditText) findViewById(R.id.editText);
     }
 
     public void load() {

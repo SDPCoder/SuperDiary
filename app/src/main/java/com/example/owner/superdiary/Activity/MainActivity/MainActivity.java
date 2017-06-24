@@ -29,46 +29,60 @@ import com.example.owner.superdiary.Activity.MainActivity.fragments.fragment2;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements fragment2.OnDateSelectedListener {
-
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private ListView lvLeftMenu;
-    private String[] lvs = {"介绍", "关于"};
-    private String[] tabNames = {"日记一览", "历史日记"};
-    private ArrayAdapter arrayAdapter;
     private ViewPager viewPager;
 
     private LocationRecordService ds;
-    private ServiceConnection sc = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            MainActivity.this.ds=((LocationRecordService.MyBinder) service).getService();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-        }
-    };
-
-    private void my_bindServices() {
-        Intent intent = new Intent(this, LocationRecordService.class);
-        startService(intent);
-        bindService(intent, sc, BIND_AUTO_CREATE);
-    }
+    private ServiceConnection sc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViews(); //获取控件
+        initService();
+        initView();
+        initEvent();
+    }
 
+    private void initService() {
+        sc = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                MainActivity.this.ds=((LocationRecordService.MyBinder) service).getService();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+            }
+        };
+        Intent intent = new Intent(this, LocationRecordService.class);
+        startService(intent);
+        bindService(intent, sc, BIND_AUTO_CREATE);
+    }
+
+    private void initView() {
+        toolbar = (Toolbar) findViewById(R.id.tl);
         toolbar.setTitleTextColor(Color.parseColor("#ffffff")); //设置标题颜色
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.dl);
+
+        viewPager = (ViewPager) findViewById(R.id.vp);
+        viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
+
+        String[] lvs = {"介绍", "关于"};
+        lvLeftMenu = (ListView) findViewById(R.id.lv);
+        ArrayAdapter arrayAdapter;
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, lvs);
+        lvLeftMenu.setAdapter(arrayAdapter);
+    }
+
+    private void initEvent() {
         //创建返回键 并实现打开关/闭监听
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R.string.close) {
             @Override
@@ -84,10 +98,6 @@ public class MainActivity extends AppCompatActivity implements fragment2.OnDateS
         mDrawerToggle.syncState();
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
-        //设置菜单列表
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, lvs);
-        lvLeftMenu.setAdapter(arrayAdapter);
-
         lvLeftMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -101,29 +111,17 @@ public class MainActivity extends AppCompatActivity implements fragment2.OnDateS
                 }
             }
         });
-
-        //类似listview
-        viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
-
-        my_bindServices();
-    }
-
-    private void findViews() {
-        toolbar = (Toolbar) findViewById(R.id.tl);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.dl);
-        lvLeftMenu = (ListView) findViewById(R.id.lv);
-        viewPager = (ViewPager) findViewById(R.id.vp);
     }
 
     @Override
     public void OnDateSelected(Calendar date) {
         viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
         fragment1 one = (fragment1)((MyAdapter)viewPager.getAdapter()).getItem(0);
-        one.setDate(date);
         one.loadData(date);
     }
 
     private class MyAdapter extends FragmentStatePagerAdapter {
+        String[] tabNames = {"日记一览", "历史日记"};
 
         public MyAdapter(FragmentManager fm) {
             super(fm);
@@ -133,8 +131,6 @@ public class MainActivity extends AppCompatActivity implements fragment2.OnDateS
 
         @Override
         public Fragment getItem(int position) {
-            two.setFragmentOne(one);
-
             if(0 == position){
                 return one;
             }else{

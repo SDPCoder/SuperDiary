@@ -14,8 +14,6 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 import rx.functions.Action1;
 
 public class CheckPermissionActivity extends AppCompatActivity {
-    Handler mHandler = new Handler();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +36,7 @@ public class CheckPermissionActivity extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         } else {
+                            Handler mHandler = new Handler();
                             Toast.makeText(CheckPermissionActivity.this, "Permission Denied. App will finish in 3 secs...", Toast.LENGTH_SHORT).show();
                             mHandler.postDelayed(new Runnable() {
                                 @Override

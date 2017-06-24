@@ -29,7 +29,10 @@ public class PictureActivity extends AppCompatActivity {
     public static final int REQUEST_TAKE_PHOTO = 1;
     public static final int REQUEST_SELECT_PHOTO = 2;
     public static final int REQUEST_CROP_PHOTO = 3;
+
     private ImageView showImage;
+    Button cameraBtn, selectBtn;
+
     private Uri imageUri;
     private String filename;
     private File outputImage;
@@ -41,13 +44,16 @@ public class PictureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
 
-        Button cameraBtn = (Button) findViewById(R.id.cameraBtn);
-        Button selectBtn = (Button) findViewById(R.id.selectBtn);
-        showImage = (ImageView) findViewById(R.id.showImage);
-        sharedPreferences = getSharedPreferences("PictureSrc", MODE_PRIVATE);
-        today = getIntent().getExtras().getString("today");
-        getBitmapFromSharedPreferences();
+        initView();
 
+        today = getIntent().getExtras().getString("today");
+
+        initEvent();
+    }
+
+    private void initEvent() {
+        sharedPreferences = getSharedPreferences("PictureSrc", MODE_PRIVATE);
+        getBitmapFromSharedPreferences();
         cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,6 +95,13 @@ public class PictureActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_SELECT_PHOTO);
             }
         });
+    }
+
+
+    private void initView() {
+        cameraBtn = (Button) findViewById(R.id.cameraBtn);
+        selectBtn = (Button) findViewById(R.id.selectBtn);
+        showImage = (ImageView) findViewById(R.id.showImage);
     }
 
     @Override
