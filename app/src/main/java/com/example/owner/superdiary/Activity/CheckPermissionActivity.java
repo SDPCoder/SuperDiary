@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.owner.superdiary.Activity.MainActivity.MainActivity;
 import com.example.owner.superdiary.R;
+import com.example.owner.superdiary.Activity.MainActivity.MainActivity;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import rx.functions.Action1;

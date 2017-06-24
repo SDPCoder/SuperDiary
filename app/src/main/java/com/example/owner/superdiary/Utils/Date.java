@@ -1,4 +1,4 @@
-package com.example.owner.superdiary.Activity.MainActivity;
+package com.example.owner.superdiary.Utils;
 
 import android.app.Application;
 import android.support.v4.view.ViewPager;
