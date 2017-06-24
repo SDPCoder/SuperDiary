@@ -23,12 +23,10 @@ import com.example.owner.superdiary.Activity.AboutActivity;
 import com.example.owner.superdiary.Activity.IntroductionActivity;
 import com.example.owner.superdiary.DataCollector.LocationRecordService;
 import com.example.owner.superdiary.R;
-import com.example.owner.superdiary.Activity.MainActivity.fragments.fragment1;
-import com.example.owner.superdiary.Activity.MainActivity.fragments.fragment2;
 
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity implements fragment2.OnDateSelectedListener {
+public class MainActivity extends AppCompatActivity implements PickDateFragment.OnDateSelectedListener {
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -116,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements fragment2.OnDateS
     @Override
     public void OnDateSelected(Calendar date) {
         viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-        fragment1 one = (fragment1)((MyAdapter)viewPager.getAdapter()).getItem(0);
+        CardDisplayFragment one = (CardDisplayFragment)((MyAdapter)viewPager.getAdapter()).getItem(0);
         one.loadData(date);
     }
 
@@ -126,8 +124,8 @@ public class MainActivity extends AppCompatActivity implements fragment2.OnDateS
         public MyAdapter(FragmentManager fm) {
             super(fm);
         }
-        fragment1 one = new fragment1();
-        fragment2 two = new fragment2();
+        CardDisplayFragment one = new CardDisplayFragment();
+        PickDateFragment two = new PickDateFragment();
 
         @Override
         public Fragment getItem(int position) {

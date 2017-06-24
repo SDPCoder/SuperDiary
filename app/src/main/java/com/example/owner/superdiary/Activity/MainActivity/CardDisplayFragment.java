@@ -1,4 +1,4 @@
-package com.example.owner.superdiary.Activity.MainActivity.fragments;
+package com.example.owner.superdiary.Activity.MainActivity;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -52,7 +52,7 @@ import java.util.Map;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class fragment1 extends Fragment {
+public class CardDisplayFragment extends Fragment {
 
     CardView bootTime_card, shutdownTime_card, unlockTime_card, moodIndex_card;
     CardView frequentContact_card, mapview_card;

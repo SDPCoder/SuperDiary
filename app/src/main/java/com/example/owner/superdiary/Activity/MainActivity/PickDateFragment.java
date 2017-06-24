@@ -1,4 +1,4 @@
-package com.example.owner.superdiary.Activity.MainActivity.fragments;
+package com.example.owner.superdiary.Activity.MainActivity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import java.util.Calendar;
 
 
-public class fragment2 extends Fragment {
+public class PickDateFragment extends Fragment {
     OnDateSelectedListener mListener;
 
     MaterialCalendarView calendarView = null;
