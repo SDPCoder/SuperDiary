@@ -21,7 +21,6 @@ import android.widget.ListView;
 
 import com.example.owner.superdiary.Activity.AboutActivity;
 import com.example.owner.superdiary.Activity.IntroductionActivity;
-import com.example.owner.superdiary.Utils.Date;
 import com.example.owner.superdiary.DataCollector.LocationRecordService;
 import com.example.owner.superdiary.R;
 import com.example.owner.superdiary.Activity.MainActivity.fragments.fragment1;
@@ -105,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements fragment2.OnDateS
 
         //类似listview
         viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
-        ((Date)getApplication()).viewPager = viewPager;
 
         my_bindServices();
     }

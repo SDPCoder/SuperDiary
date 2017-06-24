@@ -27,10 +27,10 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.TextureMapView;
-
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.CoordinateConverter;
+
 import com.example.owner.superdiary.Activity.CheckPasswordActivity;
 import com.example.owner.superdiary.Utils.MyDBHelper;
 import com.example.owner.superdiary.Activity.PasswordSettingActivityOne;
@@ -38,6 +38,7 @@ import com.example.owner.superdiary.Activity.PasswordSettingActivityTwo;
 import com.example.owner.superdiary.Activity.PictureActivity;
 import com.example.owner.superdiary.R;
 import com.example.owner.superdiary.Activity.EditActivity;
+
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -61,7 +62,6 @@ public class fragment1 extends Fragment {
     TextureMapView mapView;
     TextView dateTitle;
 
-    Handler mhandler;
     MyDBHelper bootTimeDB, shutdownTimeDB, unlockTimeDB, callsDB, moodDB, locDB;
 
     String today;
@@ -70,12 +70,10 @@ public class fragment1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (fragment == null) {
-            Context context = getActivity().getApplicationContext();
-            SDKInitializer.initialize(context);
-            fragment = View.inflate(getActivity(), R.layout.activity_main_fragment_one, null);
-            getReferences();
+            initView();
             initDB();
             initMap();
+
             date = Calendar.getInstance();
             today = String.valueOf(date.get(Calendar.YEAR)) + "_" + String.valueOf(date.get(Calendar.MONTH) + 1) + "_" + String.valueOf(date.get(Calendar.DAY_OF_MONTH));
             dateTitle.setText(String.valueOf(date.get(Calendar.YEAR)) + "年 " + String.valueOf(date.get(Calendar.MONTH) + 1) + "月 " + String.valueOf(date.get(Calendar.DAY_OF_MONTH)) + "日");
@@ -192,7 +190,9 @@ public class fragment1 extends Fragment {
         mapView.onDestroy();
     }
 
-    private void getReferences() {
+    private void initView() {
+        SDKInitializer.initialize(getActivity().getApplicationContext());
+        fragment = View.inflate(getActivity(), R.layout.activity_main_fragment_one, null);
         bootTime_text = (TextView) fragment.findViewById(R.id.bootTime_text);
         shutdownTime_text = (TextView) fragment.findViewById(R.id.shutdownTime_text);
         unlockTime_text = (TextView) fragment.findViewById(R.id.unlockTime_text);
@@ -207,8 +207,6 @@ public class fragment1 extends Fragment {
         moodIndex_card = (CardView) fragment.findViewById(R.id.moodIndex_card);
         frequentContact_card = (CardView) fragment.findViewById(R.id.frequentContact_card);
         mapview_card = (CardView) fragment.findViewById(R.id.mapview_card);
-
-        mhandler = new Handler();
     }
 
     private void initDB() {
@@ -237,11 +235,6 @@ public class fragment1 extends Fragment {
         table_header6.put("longitude", "REAL");
         table_header6.put("duration", "INTEGER");
         locDB = new MyDBHelper(context, "superdiary_test001.db", "location", table_header6, null, 1);
-    }
-
-    private void loadData() {
-        Calendar today = Calendar.getInstance();
-        loadData(today);
     }
 
     private void loadBootTime(Calendar date) {
@@ -427,6 +420,8 @@ public class fragment1 extends Fragment {
         final double final_max_latitude = max_latitude;
         Log.i("mapLongitude", String.valueOf(final_max_longitude));
         Log.i("mapLatitude", String.valueOf(final_max_latitude));
+
+        Handler mhandler = new Handler();
         mhandler.postDelayed(new Runnable() {
             @Override
             public void run() {
